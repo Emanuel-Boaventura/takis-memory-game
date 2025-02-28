@@ -147,25 +147,25 @@ export default function Index() {
         ))}
       </View>
       <TouchableOpacity style={s.startButton} onPress={startNewGame}>
-        <ThemedText style={s.startText}>INICIAR</ThemedText>
+        <ThemedText style={s.startText} weight='700'>INICIAR</ThemedText>
       </TouchableOpacity>
 
       <Modal visible={gameFinished} transparent animationType="slide">
         <View style={s.modalOverlay}>
           <View style={s.modalContainer}>
-            <ThemedText style={s.modalTitle}>Parabéns! Você venceu o jogo!</ThemedText>
+            <ThemedText style={s.modalTitle} weight='900' >Parabéns! Você venceu o jogo!</ThemedText>
 
-            <ThemedText>
-              <ThemedText weight='bold'>Escaneie</ThemedText> o <ThemedText weight='bold'>QRCode</ThemedText> abaixo e siga nossas <ThemedText weight='bold'>Redes Sociais</ThemedText> para receber a sua <ThemedText weight='bold'>Premiação</ThemedText>
+            <ThemedText style={s.modalQrText}>
+              <ThemedText weight='700'>Escaneie</ThemedText> o <ThemedText weight='700'>QRCode</ThemedText> abaixo e siga nossas <ThemedText weight='700'>Redes Sociais</ThemedText> para receber a sua <ThemedText weight='700'>Premiação</ThemedText>
             </ThemedText>
-            <ThemedText style={s.modalText}>Tempo:
-              <ThemedText weight='bold'> {TIME_LIMIT - remainingTime}s</ThemedText>
+            <ThemedText style={s.modalText} weight='600'>Tempo:
+              <ThemedText weight='700'> {TIME_LIMIT - remainingTime}s</ThemedText>
             </ThemedText>
-            <ThemedText style={s.modalText}>Tentativas:
-              <ThemedText weight='bold'> {attempts}</ThemedText>
+            <ThemedText style={s.modalText} weight='600'>Tentativas:
+              <ThemedText weight='700'> {attempts}</ThemedText>
             </ThemedText>
             <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
-              <ThemedText style={s.modalButtonText}>Jogar novamente</ThemedText>
+              <ThemedText style={s.modalButtonText} weight='700'>Jogar novamente</ThemedText>
             </TouchableOpacity>
           </View>
         </View>
@@ -224,7 +224,6 @@ const s = StyleSheet.create({
     backgroundColor: colors.secondary,
     borderRadius: 5,
     width: '100%',
-    fontWeight: '700',
     marginVertical: 'auto',
   },
   startText: {
@@ -233,7 +232,7 @@ const s = StyleSheet.create({
     color: colors.primary,
   },
   modalButton: {
-    marginTop: 8,
+    marginTop: 12,
     padding: 10,
     backgroundColor: colors.primary,
     borderRadius: 5,
@@ -245,15 +244,14 @@ const s = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     padding: 20,
-
   },
   modalContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.secondary,
-    padding: 24,
-    borderRadius: 10,
-    width: '80%',
+    padding: 16,
+    borderRadius: 8,
+    width: '70%',
 
   },
   modalButtonText: {
@@ -261,17 +259,18 @@ const s = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    fontSize: 20,
-    marginBottom: 10,
-    color: colors.primary,
+  },
+  modalQrText: {
+    fontSize: 12,
+    paddingHorizontal: 16,
     textAlign: 'center',
+    marginBottom: 16,
   },
   modalTitle: {
-    fontSize: 28,
-    marginBottom: 10,
+    fontSize: 24,
+    marginBottom: 24,
     color: colors.primary,
     textAlign: 'center',
-    fontWeight: 'bold',
     borderBottomWidth: 1,
     borderColor: colors.primary,
     paddingBottom: 12,
