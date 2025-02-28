@@ -4,7 +4,7 @@
     "slug": "takis-memory-game",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo-takis.png",
+    "icon": "./assets/images/takis-logo-1024px.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -16,7 +16,7 @@
         "backgroundColor": "#5B3192"
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo-takis.png",
+        "foregroundImage": "./assets/images/takis-logo-1024px.png",
         "backgroundColor": "#5B3192"
       },
       "package": "com.emanuelboaventura.takismemorygame"

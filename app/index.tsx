@@ -7,20 +7,22 @@ const explosion = require('@/assets/images/explosion.png')
 const fuego = require('@/assets/images/fuego.png')
 const greenPepper = require('@/assets/images/green-pepper.png')
 const redPepper = require('@/assets/images/red-pepper.png')
-const qrCode = require('@/assets/images/qr-code.png')
+import { DefeatModal } from '@/components/DefeatModal'
 import { ThemedText } from '@/components/ThemedText'
+import { VictoryModal } from '@/components/VictoryModal'
 import { colors } from '@/constants/colors'
+import { TIME_LIMIT, BLOCK_MOVE_TIME, INITIAL_SHOW_CARDS_TIME } from '@/constants/game'
 import { Stack } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 interface Card {
-  id: number;
-  type: string;
-  image: any;
-  isFlipped: boolean;
-  matched: boolean;
+  id: number
+  type: string
+  image: any
+  isFlipped: boolean
+  matched: boolean
 }
 
 const GAME_CARDS: Card[] = [
@@ -42,8 +44,6 @@ const shuffleCards = (cards: Card[]): Card[] => {
   return [...cards].sort(() => Math.random() - 0.5)
 }
 
-const TIME_LIMIT = 30 // 30s time limit
-
 export default function Index() {
   const [cards, setCards] = useState<Card[]>(shuffleCards(GAME_CARDS))
   const [selectedCards, setSelectedCards] = useState<Card[]>([])
@@ -52,7 +52,7 @@ export default function Index() {
   const [gameFinished, setGameFinished] = useState<boolean>(false)
   const [blockMove, setBlockMove] = useState<boolean>(true)
   const [remainingTime, setRemainingTime] = useState<number>(TIME_LIMIT)
-
+  const [playerWon, setPlayerWon] = useState<boolean>(true)
 
   // Calculate remaining time
   useEffect(() => {
@@ -65,6 +65,8 @@ export default function Index() {
         // End the game if time runs out
         if (newRemainingTime <= 0) {
           setGameFinished(true)
+          setPlayerWon(false)
+
           clearInterval(interval)
         }
       }, 1000)
@@ -73,7 +75,7 @@ export default function Index() {
     }
   }, [gameStartTime, gameFinished])
 
-  // Show all cards for 1.5s at the start of the game
+  // Show all cards at the start of the game
   useEffect(() => {
     if (gameStartTime !== null) {
       setBlockMove(true)
@@ -82,7 +84,7 @@ export default function Index() {
       const timeout = setTimeout(() => {
         setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false })))
         setBlockMove(false)
-      }, 1500) // 1.5s delay
+      }, INITIAL_SHOW_CARDS_TIME)
 
       return () => clearTimeout(timeout)
     }
@@ -97,6 +99,7 @@ export default function Index() {
   const resetGameState = () => {
     setAttempts(0)
     setBlockMove(true)
+    setPlayerWon(true)
     setSelectedCards([])
     setGameFinished(false)
     setGameStartTime(null)
@@ -129,9 +132,11 @@ export default function Index() {
     } else {
       setBlockMove(true)
       setTimeout(() => {
-        setCards((prevCards) => prevCards.map((c) => (selected.some((s) => s.id === c.id) ? { ...c, isFlipped: false } : c)))
+        setCards((prevCards) =>
+          prevCards.map((c) => (selected.some((s) => s.id === c.id) ? { ...c, isFlipped: false } : c)),
+        )
         setBlockMove(false)
-      }, 1000) // 1s delay
+      }, BLOCK_MOVE_TIME)
     }
     setSelectedCards([])
   }
@@ -142,16 +147,28 @@ export default function Index() {
         <ImageBackground source={background} style={s.imageBackground}>
           <Stack.Screen />
           <Image source={takisLogo} style={s.takisLogo} />
-          <ThemedText style={s.title} weight='700'>Jogo da Memória</ThemedText>
-          <ThemedText style={s.text}>Tentativas:{' '}
-            <ThemedText color='white' weight='700'>{attempts}</ThemedText>
+          <ThemedText style={s.title} weight="700">
+            Jogo da Memória
           </ThemedText>
-          <ThemedText style={s.text} weight='700'>Tempo restante: {remainingTime}s</ThemedText>
+          <ThemedText style={s.text}>
+            Tentativas:{' '}
+            <ThemedText color="white" weight="700">
+              {attempts}
+            </ThemedText>
+          </ThemedText>
+          <ThemedText style={s.text} weight="700">
+            Tempo restante: {remainingTime}s
+          </ThemedText>
 
           <View style={s.gameContainer}>
             <View style={s.cardsContainer}>
               {cards.map((card) => (
-                <TouchableOpacity key={card.id} disabled={blockMove || remainingTime <= 0} onPress={() => handleCardPress(card)} style={s.cardWrapper}>
+                <TouchableOpacity
+                  key={card.id}
+                  disabled={blockMove || remainingTime <= 0 || card.matched}
+                  onPress={() => handleCardPress(card)}
+                  style={s.cardWrapper}
+                >
                   {card.isFlipped || card.matched ? (
                     <Image source={card.image} style={s.card} />
                   ) : (
@@ -160,35 +177,28 @@ export default function Index() {
                 </TouchableOpacity>
               ))}
             </View>
-            <TouchableOpacity style={[s.startButton, gameStartTime !== null && s.hidden]} disabled={gameStartTime !== null} onPress={startNewGame}>
-              <ThemedText style={s.startText} weight='700'>Iniciar partida</ThemedText>
+            <TouchableOpacity
+              style={[s.startButton, gameStartTime !== null && s.hidden]}
+              disabled={gameStartTime !== null}
+              onPress={startNewGame}
+            >
+              <ThemedText style={s.startText} weight="700">
+                Iniciar partida
+              </ThemedText>
             </TouchableOpacity>
 
-            <ThemedText color='white' style={{ marginTop: 16, fontSize: 10 }}>Idealização</ThemedText>
+            <ThemedText color="white" style={{ marginTop: 16, fontSize: 10 }}>
+              Idealização
+            </ThemedText>
             <Image source={enjoyLogo} style={s.enjoyLogo} />
 
-            <Modal visible={gameFinished} transparent animationType="slide">
-              <View style={s.modalOverlay}>
-                <View style={s.modalContainer}>
-                  <ThemedText style={s.modalTitle} weight='900' >Parabéns! Você venceu o jogo!</ThemedText>
-
-                  <ThemedText style={s.modalQrText}>
-                    <ThemedText weight='700'>Escaneie</ThemedText> o <ThemedText weight='700'>QRCode</ThemedText> abaixo e siga nossas <ThemedText weight='700'>Redes Sociais</ThemedText> para receber a sua <ThemedText weight='700'>Premiação</ThemedText>
-                  </ThemedText>
-
-                  <Image source={qrCode} style={s.qrCode} />
-                  <ThemedText style={s.modalText} weight='600'>Tempo:
-                    <ThemedText weight='900'> {TIME_LIMIT - remainingTime}s</ThemedText>
-                  </ThemedText>
-                  <ThemedText style={s.modalText} weight='600'>Tentativas:
-                    <ThemedText weight='900'> {attempts}</ThemedText>
-                  </ThemedText>
-                  <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
-                    <ThemedText style={s.modalButtonText} weight='700'>Jogar novamente</ThemedText>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
+            <VictoryModal
+              visible={gameFinished && playerWon}
+              attempts={attempts}
+              remainingTime={remainingTime}
+              resetGameState={resetGameState}
+            />
+            <DefeatModal visible={gameFinished && !playerWon} attempts={attempts} resetGameState={resetGameState} />
           </View>
         </ImageBackground>
       </SafeAreaView>
@@ -222,7 +232,6 @@ const s = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     marginTop: 16,
     paddingTop: 28,
-
   },
   title: {
     fontSize: 16,
@@ -273,60 +282,7 @@ const s = StyleSheet.create({
     textAlign: 'center',
     color: colors.primary,
   },
-  modalButton: {
-    marginTop: 12,
-    padding: 10,
-    backgroundColor: colors.primary,
-    borderRadius: 5,
-    width: '100%',
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    padding: 20,
-  },
-  modalContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.secondary,
-    padding: 16,
-    borderRadius: 8,
-    width: '70%',
-
-  },
-  modalButtonText: {
-    fontSize: 12,
-    color: colors.secondary,
-    textAlign: 'center',
-  },
-  modalText: {
-    fontSize: 12,
-    lineHeight: 12,
-  },
-  modalQrText: {
-    fontSize: 12,
-    paddingHorizontal: 16,
-    textAlign: 'center',
-  },
-  qrCode: {
-    width: 132,
-    height: 132,
-    marginTop: 10,
-    marginBottom: 16
-  },
-  modalTitle: {
-    fontSize: 22,
-    marginBottom: 24,
-    color: colors.primary,
-    textAlign: 'center',
-    borderBottomWidth: 1,
-    borderColor: colors.primary,
-    paddingBottom: 12,
-    width: '100%',
-  },
   hidden: {
     opacity: 0,
-  }
+  },
 })
