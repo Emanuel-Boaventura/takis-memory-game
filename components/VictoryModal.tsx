@@ -1,4 +1,4 @@
-const qrCode = require('@/assets/images/qr-code.png')
+const qrCode = require('@/assets/images/qr-code.jpg')
 import { colors } from '@/constants/colors'
 import { TIME_LIMIT } from '@/constants/game'
 import React from 'react'
@@ -85,7 +85,7 @@ const s = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 16,
     textAlign: 'center',
-    width: '80%'
+    width: '80%',
   },
   qrCode: {
     width: 160,
