@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo-takis.png",
         "backgroundColor": "#5B3192"
-      }
+      },
+      "package": "com.emanuelboaventura.takismemorygame"
     },
     "plugins": [
       "expo-router",
@@ -34,6 +35,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "03530e06-251b-41d2-b379-ff9ac1614b2f"
+      }
+    },
+    "owner": "emanuel-boaventura"
   }
 }
