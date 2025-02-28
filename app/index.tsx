@@ -1,44 +1,16 @@
 const background = require('@/assets/images/background.png')
 const backCard = require('@/assets/images/card.png')
-const takisLogo = require('@/assets/images/logo-takis.png')
 const enjoyLogo = require('@/assets/images/logo-enjoy.png')
-const chilli = require('@/assets/images/chilli.png')
-const explosion = require('@/assets/images/explosion.png')
-const fuego = require('@/assets/images/fuego.png')
-const greenPepper = require('@/assets/images/green-pepper.png')
-const redPepper = require('@/assets/images/red-pepper.png')
+const takisLogo = require('@/assets/images/logo-takis.png')
 import { DefeatModal } from '@/components/DefeatModal'
 import { ThemedText } from '@/components/ThemedText'
 import { VictoryModal } from '@/components/VictoryModal'
 import { colors } from '@/constants/colors'
-import { TIME_LIMIT, BLOCK_MOVE_TIME, INITIAL_SHOW_CARDS_TIME } from '@/constants/game'
+import { BLOCK_MOVE_TIME, Card, GAME_CARDS, INITIAL_SHOW_CARDS_TIME, TIME_LIMIT } from '@/constants/game'
 import { Stack } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-
-interface Card {
-  id: number
-  type: string
-  image: any
-  isFlipped: boolean
-  matched: boolean
-}
-
-const GAME_CARDS: Card[] = [
-  { id: 1, type: 'chilli', image: chilli, isFlipped: false, matched: false },
-  { id: 2, type: 'chilli', image: chilli, isFlipped: false, matched: false },
-  { id: 3, type: 'explosion', image: explosion, isFlipped: false, matched: false },
-  { id: 4, type: 'explosion', image: explosion, isFlipped: false, matched: false },
-  { id: 5, type: 'fuego', image: fuego, isFlipped: false, matched: false },
-  { id: 6, type: 'fuego', image: fuego, isFlipped: false, matched: false },
-  { id: 7, type: 'green-pepper', image: greenPepper, isFlipped: false, matched: false },
-  { id: 8, type: 'green-pepper', image: greenPepper, isFlipped: false, matched: false },
-  { id: 9, type: 'red-pepper', image: redPepper, isFlipped: false, matched: false },
-  { id: 10, type: 'red-pepper', image: redPepper, isFlipped: false, matched: false },
-  { id: 11, type: 'logo-takis', image: takisLogo, isFlipped: false, matched: false },
-  { id: 12, type: 'logo-takis', image: takisLogo, isFlipped: false, matched: false },
-]
 
 const shuffleCards = (cards: Card[]): Card[] => {
   return [...cards].sort(() => Math.random() - 0.5)
@@ -111,6 +83,7 @@ export default function Index() {
     if (selectedCards.length < 2 && !card.isFlipped && !gameFinished && remainingTime > 0) {
       const updatedCards = cards.map((c) => (c.id === card.id ? { ...c, isFlipped: true } : c))
       setCards(updatedCards)
+
       const newSelected = [...selectedCards, { ...card, isFlipped: true }]
       setSelectedCards(newSelected)
 
