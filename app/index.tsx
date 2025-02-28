@@ -1,8 +1,12 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-import background from '@/assets/images/background.png'
-import backCard from '@/assets/images/card.png'
-import takisLogo from '@/assets/images/logo-takis.png'
-import enjoyLogo from '@/assets/images/logo-enjoy.png'
+const background = require('@/assets/images/background.png')
+const backCard = require('@/assets/images/card.png')
+const takisLogo = require('@/assets/images/logo-takis.png')
+const enjoyLogo = require('@/assets/images/logo-enjoy.png')
+const chilli = require('@/assets/images/chilli.png')
+const explosion = require('@/assets/images/explosion.png')
+const fuego = require('@/assets/images/fuego.png')
+const greenPepper = require('@/assets/images/green-pepper.png')
+const redPepper = require('@/assets/images/red-pepper.png')
 import { ThemedText } from '@/components/ThemedText'
 import { colors } from '@/constants/colors'
 import { Stack } from 'expo-router'
@@ -19,18 +23,18 @@ interface Card {
 }
 
 const GAME_CARDS: Card[] = [
-  { id: 1, type: 'chilli', image: require('@/assets/images/chilli.png'), isFlipped: false, matched: false },
-  { id: 2, type: 'chilli', image: require('@/assets/images/chilli.png'), isFlipped: false, matched: false },
-  { id: 3, type: 'explosion', image: require('@/assets/images/explosion.png'), isFlipped: false, matched: false },
-  { id: 4, type: 'explosion', image: require('@/assets/images/explosion.png'), isFlipped: false, matched: false },
-  { id: 5, type: 'fuego', image: require('@/assets/images/fuego.png'), isFlipped: false, matched: false },
-  { id: 6, type: 'fuego', image: require('@/assets/images/fuego.png'), isFlipped: false, matched: false },
-  { id: 7, type: 'green-pepper', image: require('@/assets/images/green-pepper.png'), isFlipped: false, matched: false },
-  { id: 8, type: 'green-pepper', image: require('@/assets/images/green-pepper.png'), isFlipped: false, matched: false },
-  { id: 9, type: 'red-pepper', image: require('@/assets/images/red-pepper.png'), isFlipped: false, matched: false },
-  { id: 10, type: 'red-pepper', image: require('@/assets/images/red-pepper.png'), isFlipped: false, matched: false },
-  { id: 11, type: 'logo-takis', image: require('@/assets/images/logo-takis.png'), isFlipped: false, matched: false },
-  { id: 12, type: 'logo-takis', image: require('@/assets/images/logo-takis.png'), isFlipped: false, matched: false },
+  { id: 1, type: 'chilli', image: chilli, isFlipped: false, matched: false },
+  { id: 2, type: 'chilli', image: chilli, isFlipped: false, matched: false },
+  { id: 3, type: 'explosion', image: explosion, isFlipped: false, matched: false },
+  { id: 4, type: 'explosion', image: explosion, isFlipped: false, matched: false },
+  { id: 5, type: 'fuego', image: fuego, isFlipped: false, matched: false },
+  { id: 6, type: 'fuego', image: fuego, isFlipped: false, matched: false },
+  { id: 7, type: 'green-pepper', image: greenPepper, isFlipped: false, matched: false },
+  { id: 8, type: 'green-pepper', image: greenPepper, isFlipped: false, matched: false },
+  { id: 9, type: 'red-pepper', image: redPepper, isFlipped: false, matched: false },
+  { id: 10, type: 'red-pepper', image: redPepper, isFlipped: false, matched: false },
+  { id: 11, type: 'logo-takis', image: takisLogo, isFlipped: false, matched: false },
+  { id: 12, type: 'logo-takis', image: takisLogo, isFlipped: false, matched: false },
 ]
 
 const shuffleCards = (cards: Card[]): Card[] => {
