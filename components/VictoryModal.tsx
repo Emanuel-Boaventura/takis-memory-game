@@ -50,7 +50,9 @@ export const VictoryModal = ({ visible, attempts, remainingTime, resetGameState 
 const s = StyleSheet.create({
   modalButton: {
     marginTop: 12,
-    padding: 10,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.primary,
     borderRadius: 5,
     width: '100%',
@@ -77,21 +79,22 @@ const s = StyleSheet.create({
   },
   modalText: {
     fontSize: 12,
-    lineHeight: 12,
+    lineHeight: 16,
   },
   modalQrText: {
-    fontSize: 12,
+    fontSize: 14,
     paddingHorizontal: 16,
     textAlign: 'center',
+    width: '80%'
   },
   qrCode: {
-    width: 132,
-    height: 132,
+    width: 160,
+    height: 160,
     marginTop: 10,
     marginBottom: 16,
   },
   modalTitle: {
-    fontSize: 22,
+    fontSize: 28,
     marginBottom: 24,
     color: colors.primary,
     textAlign: 'center',

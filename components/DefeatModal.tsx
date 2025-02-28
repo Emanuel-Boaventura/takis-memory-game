@@ -41,7 +41,9 @@ export const DefeatModal = ({ visible, attempts, resetGameState }: IDefeatModal)
 const s = StyleSheet.create({
   modalButton: {
     marginTop: 12,
-    padding: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+    height: 56,
     backgroundColor: colors.primary,
     borderRadius: 5,
     width: '100%',
@@ -58,6 +60,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.secondary,
     padding: 16,
+    paddingVertical: 32,
     borderRadius: 8,
     width: '70%',
   },
@@ -68,10 +71,10 @@ const s = StyleSheet.create({
   },
   modalText: {
     fontSize: 12,
-    lineHeight: 12,
+    lineHeight: 16,
   },
   modalTitle: {
-    fontSize: 22,
+    fontSize: 28,
     marginBottom: 16,
     color: colors.primary,
     textAlign: 'center',

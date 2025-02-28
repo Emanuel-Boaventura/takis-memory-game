@@ -123,14 +123,16 @@ export default function Index() {
           <ThemedText style={s.title} weight="700">
             Jogo da Memória
           </ThemedText>
-          <ThemedText style={s.text}>
+          <ThemedText color="white">
             Tentativas:{' '}
             <ThemedText color="white" weight="700">
               {attempts}
             </ThemedText>
           </ThemedText>
-          <ThemedText style={s.text} weight="700">
-            Tempo restante: {remainingTime}s
+          <ThemedText color="white">
+            <ThemedText style={{ fontSize: 16 }} weight="700" color='white'>
+              Tempo restante: {remainingTime}s
+            </ThemedText>
           </ThemedText>
 
           <View style={s.gameContainer}>
@@ -160,7 +162,7 @@ export default function Index() {
               </ThemedText>
             </TouchableOpacity>
 
-            <ThemedText color="white" style={{ marginTop: 16, fontSize: 10 }}>
+            <ThemedText color="white" style={{ marginTop: 'auto', fontSize: 10 }}>
               Idealização
             </ThemedText>
             <Image source={enjoyLogo} style={s.enjoyLogo} />
@@ -189,15 +191,15 @@ const s = StyleSheet.create({
     alignItems: 'center',
   },
   takisLogo: {
-    width: 100,
-    height: 100,
+    width: 160,
+    height: 160,
     marginTop: 24,
     marginBottom: 8,
   },
   enjoyLogo: {
-    width: 36,
-    height: 36,
-    marginVertical: 2,
+    width: 56,
+    height: 56,
+    marginVertical: 6,
   },
   gameContainer: {
     flex: 1,
@@ -210,9 +212,6 @@ const s = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     marginTop: 'auto',
-    color: colors.white,
-  },
-  text: {
     color: colors.white,
   },
   header: {
@@ -228,7 +227,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   cardWrapper: {
-    height: 72,
+    height: 108,
     width: '20%',
   },
   card: {
@@ -243,7 +242,7 @@ const s = StyleSheet.create({
     borderRadius: 10,
   },
   startButton: {
-    height: 40,
+    height: 48,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.secondary,
