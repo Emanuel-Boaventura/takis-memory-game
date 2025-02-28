@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+import background from '@/assets/images/background.png'
+import backCard from '@/assets/images/card.png'
+import takisLogo from '@/assets/images/logo-takis.png'
+import enjoyLogo from '@/assets/images/logo-enjoy.png'
 import { ThemedText } from '@/components/ThemedText'
 import { colors } from '@/constants/colors'
 import { Stack } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { Image, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 interface Card {
   id: number;
@@ -14,18 +19,18 @@ interface Card {
 }
 
 const GAME_CARDS: Card[] = [
-  { id: 1, type: 'chilli', image: require('@/assets/snacks/chilli.png'), isFlipped: false, matched: false },
-  { id: 2, type: 'chilli', image: require('@/assets/snacks/chilli.png'), isFlipped: false, matched: false },
-  { id: 3, type: 'explosion', image: require('@/assets/snacks/explosion.png'), isFlipped: false, matched: false },
-  { id: 4, type: 'explosion', image: require('@/assets/snacks/explosion.png'), isFlipped: false, matched: false },
-  { id: 5, type: 'fuego', image: require('@/assets/snacks/fuego.png'), isFlipped: false, matched: false },
-  { id: 6, type: 'fuego', image: require('@/assets/snacks/fuego.png'), isFlipped: false, matched: false },
-  { id: 7, type: 'css', image: require('@/assets/images/css.png'), isFlipped: false, matched: false },
-  { id: 8, type: 'css', image: require('@/assets/images/css.png'), isFlipped: false, matched: false },
-  { id: 9, type: 'next', image: require('@/assets/images/next.png'), isFlipped: false, matched: false },
-  { id: 10, type: 'next', image: require('@/assets/images/next.png'), isFlipped: false, matched: false },
-  { id: 11, type: 'tailwind', image: require('@/assets/images/tailwind.png'), isFlipped: false, matched: false },
-  { id: 12, type: 'tailwind', image: require('@/assets/images/tailwind.png'), isFlipped: false, matched: false },
+  { id: 1, type: 'chilli', image: require('@/assets/images/chilli.png'), isFlipped: false, matched: false },
+  { id: 2, type: 'chilli', image: require('@/assets/images/chilli.png'), isFlipped: false, matched: false },
+  { id: 3, type: 'explosion', image: require('@/assets/images/explosion.png'), isFlipped: false, matched: false },
+  { id: 4, type: 'explosion', image: require('@/assets/images/explosion.png'), isFlipped: false, matched: false },
+  { id: 5, type: 'fuego', image: require('@/assets/images/fuego.png'), isFlipped: false, matched: false },
+  { id: 6, type: 'fuego', image: require('@/assets/images/fuego.png'), isFlipped: false, matched: false },
+  { id: 7, type: 'green-pepper', image: require('@/assets/images/green-pepper.png'), isFlipped: false, matched: false },
+  { id: 8, type: 'green-pepper', image: require('@/assets/images/green-pepper.png'), isFlipped: false, matched: false },
+  { id: 9, type: 'red-pepper', image: require('@/assets/images/red-pepper.png'), isFlipped: false, matched: false },
+  { id: 10, type: 'red-pepper', image: require('@/assets/images/red-pepper.png'), isFlipped: false, matched: false },
+  { id: 11, type: 'logo-takis', image: require('@/assets/images/logo-takis.png'), isFlipped: false, matched: false },
+  { id: 12, type: 'logo-takis', image: require('@/assets/images/logo-takis.png'), isFlipped: false, matched: false },
 ]
 
 const shuffleCards = (cards: Card[]): Card[] => {
@@ -127,63 +132,93 @@ export default function Index() {
   }
 
   return (
-    <View style={s.container}>
-      <Stack.Screen />
-      <ThemedText style={s.title}>Jogo da Memória</ThemedText>
-      <View style={s.header}>
-        <ThemedText style={s.text}>Tentativas: {attempts}</ThemedText>
-        <ThemedText style={s.text}>Tempo restante: {remainingTime}s</ThemedText>
-      </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={s.container} edges={['left', 'right']}>
+        <ImageBackground source={background} style={s.imageBackground}>
+          <Stack.Screen />
+          <Image source={takisLogo} style={s.takisLogo} />
+          <ThemedText style={s.title} weight='700'>Jogo da Memória</ThemedText>
+          <ThemedText style={s.text}>Tentativas:{' '}
+            <ThemedText color='white' weight='700'>{attempts}</ThemedText>
+          </ThemedText>
+          <ThemedText style={s.text} weight='700'>Tempo restante: {remainingTime}s</ThemedText>
 
-      <View style={s.cardsContainer}>
-        {cards.map((card) => (
-          <TouchableOpacity key={card.id} disabled={blockMove || remainingTime <= 0} onPress={() => handleCardPress(card)} style={s.cardWrapper}>
-            {card.isFlipped || card.matched ? (
-              <Image source={card.image} style={s.card} />
-            ) : (
-              <View style={s.hiddenCard} />
-            )}
-          </TouchableOpacity>
-        ))}
-      </View>
-      <TouchableOpacity style={s.startButton} onPress={startNewGame}>
-        <ThemedText style={s.startText} weight='700'>INICIAR</ThemedText>
-      </TouchableOpacity>
-
-      <Modal visible={gameFinished} transparent animationType="slide">
-        <View style={s.modalOverlay}>
-          <View style={s.modalContainer}>
-            <ThemedText style={s.modalTitle} weight='900' >Parabéns! Você venceu o jogo!</ThemedText>
-
-            <ThemedText style={s.modalQrText}>
-              <ThemedText weight='700'>Escaneie</ThemedText> o <ThemedText weight='700'>QRCode</ThemedText> abaixo e siga nossas <ThemedText weight='700'>Redes Sociais</ThemedText> para receber a sua <ThemedText weight='700'>Premiação</ThemedText>
-            </ThemedText>
-            <ThemedText style={s.modalText} weight='600'>Tempo:
-              <ThemedText weight='700'> {TIME_LIMIT - remainingTime}s</ThemedText>
-            </ThemedText>
-            <ThemedText style={s.modalText} weight='600'>Tentativas:
-              <ThemedText weight='700'> {attempts}</ThemedText>
-            </ThemedText>
-            <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
-              <ThemedText style={s.modalButtonText} weight='700'>Jogar novamente</ThemedText>
+          <View style={s.gameContainer}>
+            <View style={s.cardsContainer}>
+              {cards.map((card) => (
+                <TouchableOpacity key={card.id} disabled={blockMove || remainingTime <= 0} onPress={() => handleCardPress(card)} style={s.cardWrapper}>
+                  {card.isFlipped || card.matched ? (
+                    <Image source={card.image} style={s.card} />
+                  ) : (
+                    <Image source={backCard} style={s.hiddenCard} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+            <TouchableOpacity style={s.startButton} onPress={startNewGame}>
+              <ThemedText style={s.startText} weight='700'>Iniciar partida</ThemedText>
             </TouchableOpacity>
+
+            <ThemedText color='white' style={{ marginTop: 16, fontSize: 10 }}>Idealização</ThemedText>
+            <Image source={enjoyLogo} style={s.enjoyLogo} />
+
+            <Modal visible={gameFinished} transparent animationType="slide">
+              <View style={s.modalOverlay}>
+                <View style={s.modalContainer}>
+                  <ThemedText style={s.modalTitle} weight='900' >Parabéns! Você venceu o jogo!</ThemedText>
+
+                  <ThemedText style={s.modalQrText}>
+                    <ThemedText weight='700'>Escaneie</ThemedText> o <ThemedText weight='700'>QRCode</ThemedText> abaixo e siga nossas <ThemedText weight='700'>Redes Sociais</ThemedText> para receber a sua <ThemedText weight='700'>Premiação</ThemedText>
+                  </ThemedText>
+                  <ThemedText style={s.modalText} weight='600'>Tempo:
+                    <ThemedText weight='700'> {TIME_LIMIT - remainingTime}s</ThemedText>
+                  </ThemedText>
+                  <ThemedText style={s.modalText} weight='600'>Tentativas:
+                    <ThemedText weight='700'> {attempts}</ThemedText>
+                  </ThemedText>
+                  <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
+                    <ThemedText style={s.modalButtonText} weight='700'>Jogar novamente</ThemedText>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </View>
-        </View>
-      </Modal>
-    </View>
+        </ImageBackground>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  imageBackground: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: colors.primary
+  },
+  takisLogo: {
+    width: 100,
+    height: 100,
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  enjoyLogo: {
+    width: 36,
+    height: 36,
+    marginVertical: 2,
+  },
+  gameContainer: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    marginTop: 16,
+    paddingTop: 28,
+
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     marginBottom: 20,
     marginTop: 'auto',
     color: colors.white,
@@ -200,13 +235,12 @@ const s = StyleSheet.create({
   cardsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    width: '100%',
     gap: 16,
     justifyContent: 'center',
   },
   cardWrapper: {
-    height: 100,
-    width: '30%',
+    height: 72,
+    width: '20%',
   },
   card: {
     width: '100%',
@@ -214,21 +248,22 @@ const s = StyleSheet.create({
     resizeMode: 'contain',
   },
   hiddenCard: {
+    objectFit: 'contain',
     width: '100%',
     height: '100%',
-    backgroundColor: colors.secondary,
     borderRadius: 10,
   },
   startButton: {
-    padding: 16,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.secondary,
-    borderRadius: 5,
-    width: '100%',
-    marginVertical: 'auto',
+    borderRadius: 4,
+    minWidth: '60%',
+    marginTop: 24,
   },
   startText: {
     textAlign: 'center',
-    fontSize: 16,
     color: colors.primary,
   },
   modalButton: {
