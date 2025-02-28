@@ -7,6 +7,7 @@ const explosion = require('@/assets/images/explosion.png')
 const fuego = require('@/assets/images/fuego.png')
 const greenPepper = require('@/assets/images/green-pepper.png')
 const redPepper = require('@/assets/images/red-pepper.png')
+const qrCode = require('@/assets/images/qr-code.png')
 import { ThemedText } from '@/components/ThemedText'
 import { colors } from '@/constants/colors'
 import { Stack } from 'expo-router'
@@ -174,11 +175,13 @@ export default function Index() {
                   <ThemedText style={s.modalQrText}>
                     <ThemedText weight='700'>Escaneie</ThemedText> o <ThemedText weight='700'>QRCode</ThemedText> abaixo e siga nossas <ThemedText weight='700'>Redes Sociais</ThemedText> para receber a sua <ThemedText weight='700'>Premiação</ThemedText>
                   </ThemedText>
+
+                  <Image source={qrCode} style={s.qrCode} />
                   <ThemedText style={s.modalText} weight='600'>Tempo:
-                    <ThemedText weight='700'> {TIME_LIMIT - remainingTime}s</ThemedText>
+                    <ThemedText weight='900'> {TIME_LIMIT - remainingTime}s</ThemedText>
                   </ThemedText>
                   <ThemedText style={s.modalText} weight='600'>Tentativas:
-                    <ThemedText weight='700'> {attempts}</ThemedText>
+                    <ThemedText weight='900'> {attempts}</ThemedText>
                   </ThemedText>
                   <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
                     <ThemedText style={s.modalButtonText} weight='700'>Jogar novamente</ThemedText>
@@ -294,19 +297,27 @@ const s = StyleSheet.create({
 
   },
   modalButtonText: {
+    fontSize: 12,
     color: colors.secondary,
     textAlign: 'center',
   },
   modalText: {
+    fontSize: 12,
+    lineHeight: 12,
   },
   modalQrText: {
     fontSize: 12,
     paddingHorizontal: 16,
     textAlign: 'center',
-    marginBottom: 16,
+  },
+  qrCode: {
+    width: 132,
+    height: 132,
+    marginTop: 10,
+    marginBottom: 16
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 22,
     marginBottom: 24,
     color: colors.primary,
     textAlign: 'center',
