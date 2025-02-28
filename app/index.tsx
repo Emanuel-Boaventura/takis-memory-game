@@ -100,7 +100,7 @@ export default function Index() {
   return (
     <View style={s.container}>
       <Stack.Screen />
-      <Text style={s.title}>Kitas Memory</Text>
+      <Text style={s.title}>Jogo da Memória</Text>
       <View style={s.header}>
         <Text>Jogadas: {attempts}</Text>
         <Text>Tempo: {formattedTime}</Text>
@@ -150,6 +150,7 @@ const s = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginTop: 'auto'
   },
   header: {
     flexDirection: 'row',
