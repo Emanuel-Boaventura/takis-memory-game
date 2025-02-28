@@ -50,6 +50,21 @@ export default function Index() {
     return () => clearInterval(timer);
   }, [gameStartTime, gameFinished]);
 
+  // Show all cards for 1 second at the start of the game
+  useEffect(() => {
+    if (gameStartTime !== null) {
+      setBlockMove(true); // Block moves during initial display
+      setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: true }))); // Flip all cards
+
+      const timeout = setTimeout(() => {
+        setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false }))); // Flip all cards back
+        setBlockMove(false); // Allow moves after initial display
+      }, 1500); // 1.5 seconds delay
+
+      return () => clearTimeout(timeout); // Cleanup timeout
+    }
+  }, [gameStartTime]);
+
   const startNewGame = () => {
     setCards(shuffleCards(GAME_CARDS));
     setSelectedCards([]);
@@ -57,7 +72,7 @@ export default function Index() {
     setGameTime(0);
     setGameStartTime(Date.now());
     setGameFinished(false);
-    setBlockMove(false);
+    setBlockMove(true); // Block moves during initial display
   };
 
   const handleCardPress = (card: Card) => {
