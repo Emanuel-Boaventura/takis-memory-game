@@ -29,59 +29,69 @@ const shuffleCards = (cards: Card[]): Card[] => {
   return [...cards].sort(() => Math.random() - 0.5);
 };
 
+const TIME_LIMIT = 30; // 30s time limit
+
 export default function Index() {
   const [cards, setCards] = useState<Card[]>(shuffleCards(GAME_CARDS));
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [attempts, setAttempts] = useState<number>(0);
   const [gameStartTime, setGameStartTime] = useState<number | null>(null);
-  const [gameTime, setGameTime] = useState<number>(0);
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [blockMove, setBlockMove] = useState<boolean>(true);
+  const [remainingTime, setRemainingTime] = useState<number>(TIME_LIMIT);
 
-  const formattedTime = new Date(gameTime * 1000).toISOString().slice(14, 19);
-
+  // Calculate remaining time
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (!gameFinished && gameStartTime) {
-      timer = setInterval(() => {
-        setGameTime(Math.floor((Date.now() - gameStartTime) / 1000));
+    if (gameStartTime !== null && !gameFinished) {
+      const interval = setInterval(() => {
+        const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
+        const newRemainingTime = TIME_LIMIT - elapsedTime;
+        setRemainingTime(newRemainingTime);
+
+        // End the game if time runs out
+        if (newRemainingTime <= 0) {
+          setGameFinished(true);
+          clearInterval(interval);
+        }
       }, 1000);
+
+      return () => clearInterval(interval);
     }
-    return () => clearInterval(timer);
   }, [gameStartTime, gameFinished]);
 
-  // Show all cards for 1.5 seconds at the start of the game
+  // Show all cards for 1.5s at the start of the game
   useEffect(() => {
     if (gameStartTime !== null) {
-      setBlockMove(true); // Block moves during initial display
-      setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: true }))); // Flip all cards
+      setBlockMove(true);
+      setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: true })));
 
       const timeout = setTimeout(() => {
-        setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false }))); // Flip all cards back
-        setBlockMove(false); // Allow moves after initial display
-      }, 1500); // 1.5 seconds delay
+        setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false })));
+        setBlockMove(false);
+      }, 1500); // 1.5s delay
 
-      return () => clearTimeout(timeout); // Cleanup timeout
+      return () => clearTimeout(timeout);
     }
   }, [gameStartTime]);
 
   const startNewGame = () => {
-    setCards(shuffleCards(GAME_CARDS)); // Shuffle cards
-    resetGameState(); // Reset game state
-    setGameStartTime(Date.now()); // Start the timer
+    setCards(shuffleCards(GAME_CARDS));
+    resetGameState();
+    setGameStartTime(Date.now());
   };
 
   const resetGameState = () => {
-    setSelectedCards([]);
     setAttempts(0);
-    setGameTime(0);
+    setBlockMove(true);
+    setSelectedCards([]);
     setGameFinished(false);
     setGameStartTime(null);
-    setBlockMove(true); // Block moves during initial display
-    setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false, matched: false }))); // Hide all cards
+    setRemainingTime(TIME_LIMIT);
+    setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false, matched: false })));
   };
+
   const handleCardPress = (card: Card) => {
-    if (selectedCards.length < 2 && !card.isFlipped && !gameFinished) {
+    if (selectedCards.length < 2 && !card.isFlipped && !gameFinished && remainingTime > 0) {
       const updatedCards = cards.map((c) => (c.id === card.id ? { ...c, isFlipped: true } : c));
       setCards(updatedCards);
       const newSelected = [...selectedCards, { ...card, isFlipped: true }];
@@ -96,23 +106,18 @@ export default function Index() {
 
   const checkMatch = (selected: Card[]) => {
     if (selected[0].type === selected[1].type) {
-      // If the cards match
       const updatedCards = cards.map((c) => (selected.some((s) => s.id === c.id) ? { ...c, matched: true } : c));
       setCards(updatedCards);
 
-      // Check if all cards are matched
       if (updatedCards.every((c) => c.matched)) {
         setGameFinished(true);
-        // Flip all cards to show their images
-        setCards(updatedCards.map((c) => ({ ...c, isFlipped: true })));
       }
     } else {
-      // If the cards don't match, flip them back after a delay
       setBlockMove(true);
       setTimeout(() => {
         setCards((prevCards) => prevCards.map((c) => (selected.some((s) => s.id === c.id) ? { ...c, isFlipped: false } : c)));
         setBlockMove(false);
-      }, 1000); // 1-second delay
+      }, 1000); // 1s delay
     }
     setSelectedCards([]);
   };
@@ -123,12 +128,12 @@ export default function Index() {
       <Text style={s.title}>Jogo da Memória</Text>
       <View style={s.header}>
         <Text>Jogadas: {attempts}</Text>
-        <Text>Tempo: {formattedTime}</Text>
+        <Text>Tempo restante: {remainingTime}s</Text>
       </View>
 
       <View style={s.cardsContainer}>
         {cards.map((card) => (
-          <TouchableOpacity key={card.id} disabled={blockMove} onPress={() => handleCardPress(card)} style={s.cardWrapper}>
+          <TouchableOpacity key={card.id} disabled={blockMove || remainingTime <= 0} onPress={() => handleCardPress(card)} style={s.cardWrapper}>
             {card.isFlipped || card.matched ? (
               <Image source={card.image} style={s.card} />
             ) : (
@@ -145,7 +150,7 @@ export default function Index() {
         <View style={s.modalOverlay}>
           <View style={s.modalContainer}>
             <Text style={s.modalText}>Parabéns! Você ganhou!</Text>
-            <Text style={s.modalText}>Tempo: {formattedTime}</Text>
+            <Text style={s.modalText}>Tempo: {TIME_LIMIT - remainingTime}s</Text>
             <Text style={s.modalText}>Jogadas: {attempts}</Text>
             <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
               <Text>Jogar novamente</Text>
