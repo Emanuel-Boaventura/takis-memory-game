@@ -160,7 +160,7 @@ export default function Index() {
                 </TouchableOpacity>
               ))}
             </View>
-            <TouchableOpacity style={s.startButton} onPress={startNewGame}>
+            <TouchableOpacity style={[s.startButton, gameStartTime !== null && s.hidden]} disabled={gameStartTime !== null} onPress={startNewGame}>
               <ThemedText style={s.startText} weight='700'>Iniciar partida</ThemedText>
             </TouchableOpacity>
 
@@ -326,4 +326,7 @@ const s = StyleSheet.create({
     paddingBottom: 12,
     width: '100%',
   },
+  hidden: {
+    opacity: 0,
+  }
 })
