@@ -50,7 +50,7 @@ export default function Index() {
     return () => clearInterval(timer);
   }, [gameStartTime, gameFinished]);
 
-  // Show all cards for 1 second at the start of the game
+  // Show all cards for 1.5 seconds at the start of the game
   useEffect(() => {
     if (gameStartTime !== null) {
       setBlockMove(true); // Block moves during initial display
@@ -66,18 +66,23 @@ export default function Index() {
   }, [gameStartTime]);
 
   const startNewGame = () => {
-    setCards(shuffleCards(GAME_CARDS));
+    setCards(shuffleCards(GAME_CARDS)); // Shuffle cards
+    resetGameState(); // Reset game state
+    setGameStartTime(Date.now()); // Start the timer
+  };
+
+  const resetGameState = () => {
     setSelectedCards([]);
     setAttempts(0);
     setGameTime(0);
-    setGameStartTime(Date.now());
     setGameFinished(false);
+    setGameStartTime(null);
     setBlockMove(true); // Block moves during initial display
+    setCards((prevCards) => prevCards.map((card) => ({ ...card, isFlipped: false, matched: false }))); // Hide all cards
   };
-
   const handleCardPress = (card: Card) => {
     if (selectedCards.length < 2 && !card.isFlipped && !gameFinished) {
-      const updatedCards = cards.map(c => c.id === card.id ? { ...c, isFlipped: true } : c);
+      const updatedCards = cards.map((c) => (c.id === card.id ? { ...c, isFlipped: true } : c));
       setCards(updatedCards);
       const newSelected = [...selectedCards, { ...card, isFlipped: true }];
       setSelectedCards(newSelected);
@@ -92,20 +97,20 @@ export default function Index() {
   const checkMatch = (selected: Card[]) => {
     if (selected[0].type === selected[1].type) {
       // If the cards match
-      const updatedCards = cards.map(c => (selected.some(s => s.id === c.id) ? { ...c, matched: true } : c));
+      const updatedCards = cards.map((c) => (selected.some((s) => s.id === c.id) ? { ...c, matched: true } : c));
       setCards(updatedCards);
 
       // Check if all cards are matched
-      if (updatedCards.every(c => c.matched)) {
+      if (updatedCards.every((c) => c.matched)) {
         setGameFinished(true);
         // Flip all cards to show their images
-        setCards(updatedCards.map(c => ({ ...c, isFlipped: true })));
+        setCards(updatedCards.map((c) => ({ ...c, isFlipped: true })));
       }
     } else {
       // If the cards don't match, flip them back after a delay
       setBlockMove(true);
       setTimeout(() => {
-        setCards(cards.map(c => (selected.some(s => s.id === c.id) ? { ...c, isFlipped: false } : c)));
+        setCards((prevCards) => prevCards.map((c) => (selected.some((s) => s.id === c.id) ? { ...c, isFlipped: false } : c)));
         setBlockMove(false);
       }, 1000); // 1-second delay
     }
@@ -121,9 +126,8 @@ export default function Index() {
         <Text>Tempo: {formattedTime}</Text>
       </View>
 
-
       <View style={s.cardsContainer}>
-        {cards.map(card => (
+        {cards.map((card) => (
           <TouchableOpacity key={card.id} disabled={blockMove} onPress={() => handleCardPress(card)} style={s.cardWrapper}>
             {card.isFlipped || card.matched ? (
               <Image source={card.image} style={s.card} />
@@ -140,11 +144,10 @@ export default function Index() {
       <Modal visible={gameFinished} transparent animationType="slide">
         <View style={s.modalOverlay}>
           <View style={s.modalContainer}>
-
             <Text style={s.modalText}>Parabéns! Você ganhou!</Text>
             <Text style={s.modalText}>Tempo: {formattedTime}</Text>
             <Text style={s.modalText}>Jogadas: {attempts}</Text>
-            <TouchableOpacity style={s.modalButton} onPress={startNewGame}>
+            <TouchableOpacity style={s.modalButton} onPress={resetGameState}>
               <Text>Jogar novamente</Text>
             </TouchableOpacity>
           </View>
@@ -165,7 +168,7 @@ const s = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 'auto'
+    marginTop: 'auto',
   },
   header: {
     flexDirection: 'row',
@@ -178,7 +181,7 @@ const s = StyleSheet.create({
     flexWrap: 'wrap',
     width: '100%',
     gap: 16,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   cardWrapper: {
     height: 100,
@@ -200,8 +203,8 @@ const s = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 5,
     width: '100%',
-    fontWeight: 700,
-    marginVertical: 'auto'
+    fontWeight: '700',
+    marginVertical: 'auto',
   },
   startText: {
     textAlign: 'center',
