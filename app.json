@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "takis-memory-game",
+    "name": "Takis: Jogo da Memória",
     "slug": "takis-memory-game",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,8 +26,8 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/images/logo-takis.png",
+          "imageWidth": 150,
           "resizeMode": "contain",
           "backgroundColor": "#5B3192"
         }
