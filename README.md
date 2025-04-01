@@ -21,5 +21,6 @@
 
 ## 💛 Contato
 
-- <emanuelbmatos321@gmail.com>
+- <emanuelbm.dev@gmail.com>
 - [linkedin.com/in/emanuelboaventura](https://www.linkedin.com/in/emanuelboaventura/)
+- [Portfólio](https://emanuelboaventura.com/)
