@@ -1,4 +1,4 @@
-# Jogo da Memória Takis
+# Takis: Jogo da Memória
 
 <p align="center">
   <img src="./.github/takis-home.png" width="32%" />
@@ -8,7 +8,7 @@
 
 > Jogo da memória desenvolvido especialmente para uma campanha promocional dos salgadinhos Takis. O aplicativo foi pensado para tablets, possui cronômetro, contador de tentativas e uma interface personalizada com elementos gráficos da marca.
 
-[📥 Clique aqui para baixar o APK](./github/takis-game.apk)
+[📥 Clique aqui para baixar o APK](https://github.com/Emanuel-Boaventura/takis-memory-game/releases/tag/v1.0.0/takis-game.apk)
 
 ## 🛠 Tecnologias utilizadas
 
@@ -16,6 +16,7 @@
 - Expo
 
 ## Vídeo Demonstrativo
+
 [takis-video.webm](https://github.com/user-attachments/assets/e1fefc9c-73f7-4365-8911-7cc29ddffb6f)
 
 ## 💛 Contato
