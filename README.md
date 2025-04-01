@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+# Jogo da Memória Takis
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center">
+<video src="./.github/takis-video.webm" width="50%" controls autoplay loop muted></video>
+</p>
 
-## Get started
+<p align="center">
+  <img src="./.github/takis-home.png" width="32%" />
+  <img src="./.github/takis-game.png" width="32%" />
+  <img src="./.github/takis-win.png" width="32%" />
+</p>
 
-1. Install dependencies
+> Jogo da memória desenvolvido especialmente para uma campanha promocional dos salgadinhos Takis. O aplicativo foi pensado para tablets, possui cronômetro, contador de tentativas e uma interface personalizada com elementos gráficos da marca.
 
-   ```bash
-   npm install
-   ```
+[📥 Clique aqui para baixar o APK](./github/takis-game.apk)
 
-2. Start the app
+## 🛠 Tecnologias utilizadas
 
-   ```bash
-    npx expo start
-   ```
+- React Native
+- Expo
 
-In the output, you'll find options to open the app in a
+## 💛 Contato
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- <emanuelbmatos321@gmail.com>
+- [linkedin.com/in/emanuelboaventura](https://www.linkedin.com/in/emanuelboaventura/)
