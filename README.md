@@ -1,10 +1,6 @@
 # Jogo da Memória Takis
 
 <p align="center">
-<video src="./.github/takis-video.webm" width="50%" controls autoplay loop muted></video>
-</p>
-
-<p align="center">
   <img src="./.github/takis-home.png" width="32%" />
   <img src="./.github/takis-game.png" width="32%" />
   <img src="./.github/takis-win.png" width="32%" />
@@ -18,6 +14,9 @@
 
 - React Native
 - Expo
+
+## Vídeo Demonstrativo
+[takis-video.webm](https://github.com/user-attachments/assets/e1fefc9c-73f7-4365-8911-7cc29ddffb6f)
 
 ## 💛 Contato
 
